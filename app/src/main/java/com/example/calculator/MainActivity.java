@@ -1,5 +1,7 @@
 package com.example.calculator;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -8,11 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-
+   public  boolean check = true ;
      TextView editText;
      Button bC, bDel, b9, b8, b7, bAdd, b6, b5, b4, bSub, b3, b2, b1, bDiv,
                    b0, bDot, bEqu, bMul;
@@ -40,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         bDot = (Button) findViewById(R.id.b_dot);
         bEqu = (Button) findViewById(R.id.b_equ);
         bMul = (Button) findViewById(R.id.b_mul);
+
+
 
         bC.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
         bAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(editText.getText().toString()+"+");
+                validInputs();
+                if(check){
+                    editText.setText(editText.getText().toString()+"+");
+                }
+
             }
         });
         b6.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +114,11 @@ public class MainActivity extends AppCompatActivity {
         bSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(editText.getText().toString()+"-");
+                validInputs();
+                if(check){
+                    editText.setText(editText.getText().toString()+"-");
+                }
+
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +142,11 @@ public class MainActivity extends AppCompatActivity {
         bDiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(editText.getText().toString()+"%");
+                validInputs();
+                if(check){
+                    editText.setText(editText.getText().toString()+"%");
+                }
+
             }
         });
         b0.setOnClickListener(new View.OnClickListener() {
@@ -139,26 +158,104 @@ public class MainActivity extends AppCompatActivity {
         bDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(editText.getText().toString()+".");
+                validInputs();
+                validDotInputs();
+                if(check){
+                    editText.setText(editText.getText().toString()+".");
+                }
+
             }
         });
         bEqu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(editText.getText().toString()+"=");
+                solution();
             }
         });
         bMul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(editText.getText().toString()+"*");
+                validInputs();
+                if(check){
+                    editText.setText(editText.getText().toString()+"*");
+                }
+
             }
         });
 
 
     }
 
+    private void validDotInputs() {
+        String allInputs = editText.getText().toString();
+        String[] inputArray = allInputs.split("");
+        for(int i=inputArray.length-1;i>0;i--){
+            if(Objects.equals(inputArray[i], "+")){
+                check = true;
+                break;
+            }
+            else if(Objects.equals(inputArray[i], "-")){
+                check = true;
+                break;
+            }
+            else if(Objects.equals(inputArray[i], "*")){
+                check = true;
+                break;
+            }
+            else if(Objects.equals(inputArray[i], "%")){
+                check = true;
+                break;
+            }
+            else if(Objects.equals(inputArray[i], ".")){
+                Toast.makeText(MainActivity.this,
+                        "Invalid input", Toast.LENGTH_SHORT).show();
+                check = false;
+                break;
+            }
+        }
+
+    }
+
+    public void validInputs() {
+        check = true;
+
+        String allInputs = editText.getText().toString();
+        if (allInputs.length() < 1) {
+            Toast.makeText(MainActivity.this,
+                    "Invalid input", Toast.LENGTH_LONG).show();
+            check = false;
+        }
+
+        String[] inputArray = allInputs.split("");
+        String lastValue = inputArray[inputArray.length - 1];
+        if (Objects.equals(lastValue, "+")) {
+            Toast.makeText(MainActivity.this,
+                    "Invalid input", Toast.LENGTH_LONG).show();
+            check = false;
+        } else if (Objects.equals(lastValue, "-")) {
+            Toast.makeText(MainActivity.this,
+                    "Invalid input", Toast.LENGTH_LONG).show();
+            check = false;
+        } else if (Objects.equals(lastValue, "%")) {
+            Toast.makeText(MainActivity.this,
+                    "Invalid input", Toast.LENGTH_LONG).show();
+            check = false;
+        } else if (Objects.equals(lastValue, "*")) {
+            Toast.makeText(MainActivity.this,
+                    "Invalid input", Toast.LENGTH_LONG).show();
+            check = false;
+        } else if (Objects.equals(lastValue, ".")) {
+            Toast.makeText(MainActivity.this,
+                    "Invalid input", Toast.LENGTH_LONG).show();
+            check = false;
+        }
 
 
+    }
 
-}
+    private void solution(){
+
+        }
+
+    }
+
